@@ -46,7 +46,7 @@ void enqueueIntoHTCNQueue(HCTNQueue* pHCTNQueue, HCTNode* pHCTNode)
     }
     else if (isEmptyHCTNQueue(pHCTNQueue) == false)
     {
-        pHCTNQueue->pBack->pLeft = pHCTNode;
+        pHCTNQueue->pBack->pNextNode = pHCTNode;
         pHCTNQueue->pBack = pHCTNode;
     }
 }
@@ -67,7 +67,9 @@ HCTNode* dequeueFromHTCNQueue(HCTNQueue* pHCTNQueue)
 
     HCTNode* pHCTNode = pHCTNQueue->pFront;
 
-    pHCTNQueue->pFront = pHCTNQueue->pFront->pLeft;
+    pHCTNQueue->pFront = pHCTNQueue->pFront->pNextNode;
+
+    pHCTNode->pNextNode = NULL;
 
     if (isEmptyHCTNQueue(pHCTNQueue) == true)
     {
@@ -110,7 +112,7 @@ void destroyHCTNQueue(HCTNQueue* pHCTNQueue)
 
     while (pHCTNQueue->pFront != NULL)
     {
-        HCTNode* pNext = pHCTNQueue->pFront->pLeft;
+        HCTNode* pNext = pHCTNQueue->pFront->pNextNode;
 
         destroyHCTNode(pHCTNQueue->pFront);
 

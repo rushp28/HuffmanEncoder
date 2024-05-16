@@ -9,4 +9,6 @@ add_executable(m2 main.c
         hct_node.c
         hct_node.h
         hctn_queue.c
-        hctn_queue.h)
+        hctn_queue.h
+        hc_tree.c
+        hc_tree.h)

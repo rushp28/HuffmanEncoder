@@ -2,10 +2,11 @@
 
 #include "char_freq.h"
 #include "hctn_queue.h"
+#include "hc_tree.h"
 
 int main()
 {
-    CharFreq* pCharFreqs = createCharFreqs("Hello, World!");
+    CharFreq* pCharFreqs = createCharFreqs("HHHIIIOOO!!!");
     if (!pCharFreqs)
     {
         return 1;
@@ -26,9 +27,22 @@ int main()
 
     fillUpHCTNQueue(pCharacterQueue, pCharFreqs);
 
+    HCTree* pHCTree = createHCTree();
+    if (!pHCTree)
+    {
+        destroyCharFreqs(pCharFreqs);
+        destroyHCTNQueue(pCharacterQueue);
+        destroyHCTNQueue(pInternalQueue);
+
+        return 1;
+    }
+
+    generateHCTree(pHCTree, pCharacterQueue, pInternalQueue);
+
+    destroyCharFreqs(pCharFreqs);
     destroyHCTNQueue(pCharacterQueue);
     destroyHCTNQueue(pInternalQueue);
-    destroyCharFreqs(pCharFreqs);
+    destroyHCTree(pHCTree);
 
     return 0;
 }
