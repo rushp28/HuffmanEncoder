@@ -1,21 +1,33 @@
 #include <stdio.h>
 
 #include "char_freq.h"
+#include "hctn_queue.h"
 
 int main()
 {
     CharFreq* pCharFreqs = createCharFreqs("Hello, World!");
-
     if (!pCharFreqs)
     {
-        printf("Error: Memory Allocation for Character Frequencies Failed!\n");
         return 1;
     }
-    else
+
+    sortCharFreqs(pCharFreqs);
+
+    HCTNQueue* pCharacterQueue = createHCTNQueue();
+    HCTNQueue* pInternalQueue = createHCTNQueue();
+    if (!pCharacterQueue || !pInternalQueue)
     {
-        sortCharFreqs(pCharFreqs);
+        destroyCharFreqs(pCharFreqs);
+        destroyHCTNQueue(pCharacterQueue);
+        destroyHCTNQueue(pInternalQueue);
+
+        return 1;
     }
 
+    fillUpHCTNQueue(pCharacterQueue, pCharFreqs);
+
+    destroyHCTNQueue(pCharacterQueue);
+    destroyHCTNQueue(pInternalQueue);
     destroyCharFreqs(pCharFreqs);
 
     return 0;

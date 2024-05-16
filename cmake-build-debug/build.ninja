@@ -61,6 +61,18 @@ build CMakeFiles/m2.dir/char_freq.c.obj: C_COMPILER__m2_unscanned_Debug D$:/Prog
   OBJECT_DIR = CMakeFiles\m2.dir
   OBJECT_FILE_DIR = CMakeFiles\m2.dir
 
+build CMakeFiles/m2.dir/hct_node.c.obj: C_COMPILER__m2_unscanned_Debug D$:/Programming/c_and_cpp_projects/m2/hct_node.c || cmake_object_order_depends_target_m2
+  DEP_FILE = CMakeFiles\m2.dir\hct_node.c.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\m2.dir
+  OBJECT_FILE_DIR = CMakeFiles\m2.dir
+
+build CMakeFiles/m2.dir/hctn_queue.c.obj: C_COMPILER__m2_unscanned_Debug D$:/Programming/c_and_cpp_projects/m2/hctn_queue.c || cmake_object_order_depends_target_m2
+  DEP_FILE = CMakeFiles\m2.dir\hctn_queue.c.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\m2.dir
+  OBJECT_FILE_DIR = CMakeFiles\m2.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target m2
@@ -69,7 +81,7 @@ build CMakeFiles/m2.dir/char_freq.c.obj: C_COMPILER__m2_unscanned_Debug D$:/Prog
 #############################################
 # Link the executable m2.exe
 
-build m2.exe: C_EXECUTABLE_LINKER__m2_Debug CMakeFiles/m2.dir/main.c.obj CMakeFiles/m2.dir/char_freq.c.obj
+build m2.exe: C_EXECUTABLE_LINKER__m2_Debug CMakeFiles/m2.dir/main.c.obj CMakeFiles/m2.dir/char_freq.c.obj CMakeFiles/m2.dir/hct_node.c.obj CMakeFiles/m2.dir/hctn_queue.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\m2.dir

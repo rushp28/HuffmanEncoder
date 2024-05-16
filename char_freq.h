@@ -1,6 +1,7 @@
 #ifndef M2_CHAR_FREQ_H
 #define M2_CHAR_FREQ_H
 
+#include <stdio.h>
 #include <malloc.h>
 #include <ctype.h>
 
