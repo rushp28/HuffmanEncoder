@@ -6,7 +6,7 @@
 
 int main()
 {
-    char* pText = "qwertyuiopasdfghjklzxcvbnm 1234567890,./;'[]=-`~!@#$%^&*()_+{}|:<>?";
+    char* pText = "Hello, World! This is a test text. I am testing the Huffman coding algorithm.";
 
     CharInfoNode* pCharInfoNodeDictionary = createCharInfoNodeDictionary();
     if (!pCharInfoNodeDictionary)
@@ -45,6 +45,8 @@ int main()
     assignHuffmanCodes(pHCTree->pRoot, pCharInfoNodeDictionary, "", 0);
 
     printCharInfoDictionary(pCharInfoNodeDictionary);
+
+    encodeText(pText, pCharInfoNodeDictionary);
 
     freeCharInfoDictionary(pCharInfoNodeDictionary);
     freeHCTNQueue(pCharacterQueue);

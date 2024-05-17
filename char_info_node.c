@@ -99,6 +99,92 @@ void assignHuffmanCodes(HCTNode* pHCTNode, CharInfoNode* pCharInfoNodeDictionary
     }
 }
 
+void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary)
+{
+    if (pCharInfoNodeDictionary == NULL)
+    {
+        fprintf(stderr, "ERROR: Failed to Encode Text!\nCAUSE: Pointer to pCharInfoNodeDictionary is NULL!\n");
+        return;
+    }
+
+    int textLength = strlen(text);
+    char* encodedText = (char*)calloc(textLength * 8 + 1, sizeof(char)); // 8 bits per character
+    if (encodedText == NULL)
+    {
+        fprintf(stderr, "ERROR: Failed to Encode Text!\nCAUSE: Memory Allocation for Encoded Text Failed!\n");
+        return;
+    }
+
+    int encodedTextIndex = 0;
+    for (int textIndex = 0; textIndex < textLength; textIndex++)
+    {
+        unsigned char castedTextCharacter = (unsigned char)text[textIndex];
+        for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++)
+        {
+            if (pCharInfoNodeDictionary[decimalCharIndex].character == castedTextCharacter)
+            {
+                int huffmanCodeLength = strlen(pCharInfoNodeDictionary[decimalCharIndex].huffmanCode);
+                strncpy(&encodedText[encodedTextIndex], pCharInfoNodeDictionary[decimalCharIndex].huffmanCode, huffmanCodeLength);
+                encodedTextIndex += huffmanCodeLength;
+                break;
+            }
+        }
+    }
+
+    encodedText[encodedTextIndex] = '\0';
+
+    printf("Encoded Text: %s\n", encodedText);
+
+    free(encodedText);
+}
+
+void decodeText(const char encodedText[], CharInfoNode* pCharInfoNodeDictionary)
+{
+    if (pCharInfoNodeDictionary == NULL)
+    {
+        fprintf(stderr, "ERROR: Failed to Decode Text!\nCAUSE: Pointer to pCharInfoNodeDictionary is NULL!\n");
+        return;
+    }
+
+    int encodedTextLength = strlen(encodedText);
+    int decodedTextLength = 0;
+
+    char* decodedText = (char*)calloc(encodedTextLength + 1, sizeof(char));
+    if (decodedText == NULL)
+    {
+        fprintf(stderr, "ERROR: Failed to Decode Text!\nCAUSE: Memory Allocation for Decoded Text Failed!\n");
+        return;
+    }
+
+    int encodedTextIndex = 0;
+
+    while (encodedTextIndex < encodedTextLength)
+    {
+        HCTNode* pHCTNode = NULL;
+        for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++)
+        {
+            if (pCharInfoNodeDictionary[decimalCharIndex].huffmanCode != NULL)
+            {
+                int huffmanCodeLength = strlen(pCharInfoNodeDictionary[decimalCharIndex].huffmanCode);
+
+                if (strncmp(&encodedText[encodedTextIndex], pCharInfoNodeDictionary[decimalCharIndex].huffmanCode, huffmanCodeLength) == 0)
+                {
+                    decodedText[decodedTextLength++] = pCharInfoNodeDictionary[decimalCharIndex].character;
+                    encodedTextIndex += huffmanCodeLength;
+
+                    break;
+                }
+            }
+        }
+    }
+
+    decodedText[decodedTextLength] = '\0';
+
+    printf("Decoded Text: %s\n", decodedText);
+
+    free(decodedText);
+}
+
 void freeCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary)
 {
     if (pCharInfoNodeDictionary == NULL)

@@ -26,6 +26,10 @@ void sortCharFreqs(CharInfoNode* pCharInfoNodeDictionary);
 
 void assignHuffmanCodes(HCTNode* pHCTNode, CharInfoNode* pCharInfoNodeDictionary, const char* huffmanCode, int huffmanCodeLength);
 
+void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary);
+
+void decodeText(const char encodedText[], CharInfoNode* pCharInfoNodeDictionary);
+
 void freeCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary);
 
 void printCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary);
