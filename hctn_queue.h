@@ -4,7 +4,7 @@
 #include <malloc.h>
 #include <stdbool.h>
 
-#include "char_freq.h"
+#include "char_info_node.h"
 #include "hct_node.h"
 
 typedef struct HCTNQueue
@@ -21,8 +21,8 @@ void enqueueIntoHTCNQueue(HCTNQueue* pHCTNQueue, HCTNode* pHCTNode);
 
 HCTNode* dequeueFromHTCNQueue(HCTNQueue* pHCTNQueue);
 
-void fillUpHCTNQueue(HCTNQueue* pHCTNQueue, CharFreq* pCharFreqs);
+void fillUpHCTNQueue(HCTNQueue* pHCTNQueue, CharInfoNode* pCharInfoNodeDictionary);
 
-void destroyHCTNQueue(HCTNQueue* pHCTNQueue);
+void freeHCTNQueue(HCTNQueue* pHCTNQueue);
 
 #endif //M2_HCTN_QUEUE_H

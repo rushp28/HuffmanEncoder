@@ -5,7 +5,7 @@ HCTNQueue* createHCTNQueue()
     HCTNQueue* pNewHCTNQueue = (HCTNQueue*)calloc(1, sizeof(HCTNQueue));
     if (pNewHCTNQueue == NULL)
     {
-        fprintf(stderr, "ERROR: Creating of Huffman Coding Tree Node Queue Failed!\nCAUSE: Memory Allocation for HCTN Queue Failed!\n");
+        fprintf(stderr, "ERROR: Failed to Create Huffman Coding Tree Node Queue!\nCAUSE: Memory Allocation for HCTN Queue Failed!\n");
         return NULL;
     }
 
@@ -19,7 +19,7 @@ bool isEmptyHCTNQueue(HCTNQueue* pHCTNQueue)
 {
     if (pHCTNQueue == NULL)
     {
-        fprintf(stderr, "ERROR: Checking if Huffman Coding Tree Node Queue is Empty Failed!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Check if Huffman Coding Tree Node Queue is Empty!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
         return NULL;
     }
 
@@ -30,12 +30,12 @@ void enqueueIntoHTCNQueue(HCTNQueue* pHCTNQueue, HCTNode* pHCTNode)
 {
     if (pHCTNQueue == NULL)
     {
-        fprintf(stderr, "ERROR: Enqueuing into Huffman Coding Tree Node Queue Failed!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Enqueue into Huffman Coding Tree Node Queue!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
         return;
     }
     if (pHCTNode == NULL)
     {
-        fprintf(stderr, "ERROR: Enqueuing into Huffman Coding Tree Node Queue Failed!\nCAUSE: Pointer to HCT Node is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Enqueue into Huffman Coding Tree Node Queue!\nCAUSE: Pointer to HCT Node is NULL!\n");
         return;
     }
 
@@ -55,13 +55,13 @@ HCTNode* dequeueFromHTCNQueue(HCTNQueue* pHCTNQueue)
 {
     if (pHCTNQueue == NULL)
     {
-        fprintf(stderr, "ERROR: Dequeuing from Huffman Coding Tree Node Queue Failed!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Dequeue from Huffman Coding Tree Node Queue!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
         return NULL;
     }
 
     if (isEmptyHCTNQueue(pHCTNQueue) == true)
     {
-        fprintf(stderr, "ERROR: Dequeuing from Huffman Coding Tree Node Queue Failed!\nCAUSE: HCTN Queue is Empty!\n");
+        fprintf(stderr, "ERROR: Failed to Dequeue from Huffman Coding Tree Node Queue!\nCAUSE: HCTN Queue is Empty!\n");
         return NULL;
     }
 
@@ -79,34 +79,34 @@ HCTNode* dequeueFromHTCNQueue(HCTNQueue* pHCTNQueue)
     return pHCTNode;
 }
 
-void fillUpHCTNQueue(HCTNQueue* pHCTNQueue, CharFreq* pCharFreqs)
+void fillUpHCTNQueue(HCTNQueue* pHCTNQueue, CharInfoNode* pCharInfoNodeDictionary)
 {
     if (pHCTNQueue == NULL)
     {
-        fprintf(stderr, "ERROR: Filling up of Huffman Coding Tree Node Queue Failed!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Fill Up Huffman Coding Tree Node Queue!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
         return;
     }
-    if (pCharFreqs == NULL)
+    if (pCharInfoNodeDictionary == NULL)
     {
-        fprintf(stderr, "ERROR: Filling up of Huffman Coding Tree Node Queue Failed!\nCAUSE: Pointer to Character Frequencies Array is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Fill Up Huffman Coding Tree Node Queue!\nCAUSE: Pointer to Character Frequencies Array is NULL!\n");
         return;
     }
 
-    for (int charFreqIndex = 0; charFreqIndex < MAX_CHARACTERS; charFreqIndex++)
+    for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++)
     {
-        if (pCharFreqs[charFreqIndex].frequency > 0)
+        if (pCharInfoNodeDictionary[decimalCharIndex].frequency > 0)
         {
-            enqueueIntoHTCNQueue(pHCTNQueue,createHCTNode(pCharFreqs[charFreqIndex].character, pCharFreqs[charFreqIndex].frequency));
+            enqueueIntoHTCNQueue(pHCTNQueue,createHCTNode(pCharInfoNodeDictionary[decimalCharIndex].character, pCharInfoNodeDictionary[decimalCharIndex].frequency));
         }
     }
 }
 
 
-void destroyHCTNQueue(HCTNQueue* pHCTNQueue)
+void freeHCTNQueue(HCTNQueue* pHCTNQueue)
 {
     if (pHCTNQueue == NULL)
     {
-        fprintf(stderr, "ERROR: Destroying of Huffman Coding Tree Node Queue Failed!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Destroy Huffman Coding Tree Node Queue!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
         return;
     }
 
@@ -114,7 +114,7 @@ void destroyHCTNQueue(HCTNQueue* pHCTNQueue)
     {
         HCTNode* pNext = pHCTNQueue->pFront->pNextNode;
 
-        destroyHCTNode(pHCTNQueue->pFront);
+        freeHCTNode(pHCTNQueue->pFront);
 
         pHCTNQueue->pFront = pNext;
     }

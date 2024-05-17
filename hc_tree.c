@@ -5,7 +5,7 @@ HCTree* createHCTree()
     HCTree* pNewHCTree = (HCTree*)calloc(1, sizeof(HCTree));
     if (pNewHCTree == NULL)
     {
-        fprintf(stderr, "ERROR: Creating of Huffman Coding Tree Failed!\nCAUSE: Memory Allocation for Huffman Coding Tree Failed!\n");
+        fprintf(stderr, "ERROR: Failed to Create Huffman Coding Tree!\nCAUSE: Memory Allocation for Huffman Coding Tree Failed!\n");
         return NULL;
     }
 
@@ -18,17 +18,17 @@ void generateHCTree(HCTree* pHCTree, HCTNQueue* pCharacterHCTNQueue, HCTNQueue* 
 {
     if (pHCTree == NULL)
     {
-        fprintf(stderr, "ERROR: Generating of Huffman Coding Tree Failed!\nCAUSE: Pointer to Huffman Coding Tree is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Generate Huffman Coding Tree!\nCAUSE: Pointer to Huffman Coding Tree is NULL!\n");
         return;
     }
     if (pCharacterHCTNQueue == NULL)
     {
-        fprintf(stderr, "ERROR: Generating of Huffman Coding Tree Failed!\nCAUSE: Pointer to Character Huffman Coding Tree Node Queue is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Generate Huffman Coding Tree!\nCAUSE: Pointer to Character Huffman Coding Tree Node Queue is NULL!\n");
         return;
     }
     if (pInternalHCTNQueue == NULL)
     {
-        fprintf(stderr, "ERROR: Generating of Huffman Coding Tree Failed!\nCAUSE: Pointer to Internal Huffman Coding Tree Node Queue is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Generate Huffman Coding Tree!\nCAUSE: Pointer to Internal Huffman Coding Tree Node Queue is NULL!\n");
         return;
     }
 
@@ -65,17 +65,25 @@ void generateHCTree(HCTree* pHCTree, HCTNQueue* pCharacterHCTNQueue, HCTNQueue* 
     pHCTree->pRoot = dequeueFromHTCNQueue(pInternalHCTNQueue);
 }
 
-void destroyHCTree(HCTree* pHCTree)
+void freeHCTree(HCTree* pHCTree)
 {
     if (pHCTree == NULL)
     {
-        fprintf(stderr, "ERROR: Destroying of Huffman Coding Tree Failed!\nCAUSE: Pointer to Huffman Coding Tree is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Destroy Huffman Coding Tree!\nCAUSE: Pointer to Huffman Coding Tree is NULL!\n");
         return;
     }
 
-    destroyHCTNodesInHCTree(pHCTree->pRoot);
+    freeHCTNodesInHCTree(pHCTree->pRoot);
 
     free(pHCTree);
 }
 
+void freeHCTNodesInHCTree(HCTNode* pHCTNode)
+{
+    if (pHCTNode == NULL) return;
 
+    freeHCTNodesInHCTree(pHCTNode->pLeftNode);
+    freeHCTNodesInHCTree(pHCTNode->pRightNode);
+
+    free(pHCTNode);
+}

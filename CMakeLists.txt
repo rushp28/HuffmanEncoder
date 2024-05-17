@@ -4,8 +4,8 @@ project(m2 C)
 set(CMAKE_C_STANDARD 17)
 
 add_executable(m2 main.c
-        char_freq.c
-        char_freq.h
+        char_info_node.c
+        char_info_node.h
         hct_node.c
         hct_node.h
         hctn_queue.c

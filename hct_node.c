@@ -5,7 +5,7 @@ HCTNode* createHCTNode(char character, int weight)
     HCTNode* pNewHCTNode = (HCTNode*)calloc(1, sizeof(HCTNode));
     if (pNewHCTNode == NULL)
     {
-        fprintf(stderr, "ERROR: Creating of Huffman Coding Tree Node Failed!\nCAUSE: Memory Allocation for HCT Node Failed!\n");
+        fprintf(stderr, "ERROR: Failed to Create Huffman Coding Tree Node!\nCAUSE: Memory Allocation for HCT Node Failed!\n");
         return NULL;
     }
 
@@ -18,26 +18,14 @@ HCTNode* createHCTNode(char character, int weight)
     return pNewHCTNode;
 }
 
-void destroyHCTNode(HCTNode* pHCTNode)
+void freeHCTNode(HCTNode* pHCTNode)
+
 {
     if (pHCTNode == NULL)
     {
-        fprintf(stderr, "ERROR: Destroying of Huffman Coding Tree Node Failed!\nCAUSE: Pointer to HCT Node in the HCTN Queue is NULL!\n");
+        fprintf(stderr, "ERROR: Failed to Destroy to Huffman Coding Tree Node!\nCAUSE: Pointer to HCT Node in the HCTN Queue is NULL!\n");
         return;
     }
-
-    free(pHCTNode);
-}
-
-void destroyHCTNodesInHCTree(HCTNode* pHCTNode)
-{
-    if (pHCTNode == NULL)
-    {
-        return;
-    }
-
-    destroyHCTNodesInHCTree(pHCTNode->pLeftNode);
-    destroyHCTNodesInHCTree(pHCTNode->pRightNode);
 
     free(pHCTNode);
 }

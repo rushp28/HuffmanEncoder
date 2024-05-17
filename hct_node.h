@@ -15,8 +15,6 @@ typedef struct HCTNode
 
 HCTNode* createHCTNode(char character, int weight);
 
-void destroyHCTNode(HCTNode* pHCTNode);
-
-void destroyHCTNodesInHCTree(HCTNode* pHCTNode);
+void freeHCTNode(HCTNode* pHCTNode);
 
 #endif //M2_HCT_NODE_H

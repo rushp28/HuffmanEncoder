@@ -15,6 +15,8 @@ HCTree* createHCTree();
 
 void generateHCTree(HCTree* pHCTree, HCTNQueue* pCharacterHCTNQueue, HCTNQueue* pInternalHCTNQueue);
 
-void destroyHCTree(HCTree* pHCTree);
+void freeHCTree(HCTree* pHCTree);
+
+void freeHCTNodesInHCTree(HCTNode* pHCTNode);
 
 #endif //M2_HC_TREE_H
