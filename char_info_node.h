@@ -18,13 +18,13 @@ typedef struct CharInfoNode {
 
 CharInfoNode* createCharInfoNodeDictionary();
 
-void calculateCharFreqs(CharInfoNode* pCharInfoNodeDictionary, const char text[]);
+void calculateCharFreqs(const char text[], CharInfoNode* pCharInfoNodeDictionary);
 
 int compareCharFreqs(const void* pVoidFirstCharInfoNode, const void* pVoidSecondCharInfoNode);
 
 void sortCharFreqs(CharInfoNode* pCharInfoNodeDictionary);
 
-void assignHuffmanCodes(HCTNode* pHCTNode, CharInfoNode* pCharInfoNodeDictionary, const char* huffmanCode, int huffmanCodeLength);
+void assignHuffmanCodes(HCTNode* pHCTNode, CharInfoNode* pCharInfoNodeDictionary, char* huffmanCodeBuffer, int huffmanCodeLength);
 
 void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary);
 
