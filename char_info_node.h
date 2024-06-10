@@ -30,7 +30,7 @@ void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary);
 
 void decodeText(const char encodedText[], CharInfoNode* pCharInfoNodeDictionary);
 
-void freeCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary);
+void destroyCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary);
 
 void printCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary);
 

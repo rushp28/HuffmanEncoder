@@ -18,7 +18,7 @@ HCTNode* createHCTNode(char character, int weight)
     return pNewHCTNode;
 }
 
-void freeHCTNode(HCTNode* pHCTNode)
+void destroyHCTNode(HCTNode* pHCTNode)
 
 {
     if (pHCTNode == NULL)

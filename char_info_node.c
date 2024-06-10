@@ -131,7 +131,7 @@ void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary)
         return;
     }
 
-    int textLength = strlen(text);
+    int textLength = (int)strlen(text);
     char* encodedText = (char*)calloc(textLength * 8 + 1, sizeof(char)); // 8 bits per character
 
     if (encodedText == NULL)
@@ -150,7 +150,7 @@ void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary)
         {
             if (pCharInfoNodeDictionary[decimalCharIndex].character == castedTextCharacter)
             {
-                int huffmanCodeLength = strlen(pCharInfoNodeDictionary[decimalCharIndex].huffmanCode);
+                int huffmanCodeLength = (int)strlen(pCharInfoNodeDictionary[decimalCharIndex].huffmanCode);
                 strncpy(&encodedText[encodedTextIndex], pCharInfoNodeDictionary[decimalCharIndex].huffmanCode, huffmanCodeLength);
                 encodedTextIndex += huffmanCodeLength;
                 break;
@@ -160,7 +160,8 @@ void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary)
 
     encodedText[encodedTextIndex] = '\0';
 
-    printf("Here's your Encoded Text:\n%s\n", encodedText);
+    fprintf(stdout, "Here's your Encoded Text:\n%s\n", encodedText);
+    fflush(stdout);
 
     free(encodedText);
 }
@@ -173,7 +174,7 @@ void decodeText(const char encodedText[], CharInfoNode* pCharInfoNodeDictionary)
         return;
     }
 
-    int encodedTextLength = strlen(encodedText);
+    int encodedTextLength = (int)strlen(encodedText);
     int decodedTextLength = 0;
 
     char* decodedText = (char*)calloc(encodedTextLength + 1, sizeof(char));
@@ -187,12 +188,11 @@ void decodeText(const char encodedText[], CharInfoNode* pCharInfoNodeDictionary)
 
     while (encodedTextIndex < encodedTextLength)
     {
-        HCTNode* pHCTNode = NULL;
         for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++)
         {
             if (pCharInfoNodeDictionary[decimalCharIndex].huffmanCode != NULL)
             {
-                int huffmanCodeLength = strlen(pCharInfoNodeDictionary[decimalCharIndex].huffmanCode);
+                int huffmanCodeLength = (int)strlen(pCharInfoNodeDictionary[decimalCharIndex].huffmanCode);
 
                 if (strncmp(&encodedText[encodedTextIndex], pCharInfoNodeDictionary[decimalCharIndex].huffmanCode, huffmanCodeLength) == 0)
                 {
@@ -207,12 +207,13 @@ void decodeText(const char encodedText[], CharInfoNode* pCharInfoNodeDictionary)
 
     decodedText[decodedTextLength] = '\0';
 
-    printf("Decoded Text: %s\n", decodedText);
+    fprintf(stdout, "Decoded Text: %s\n", decodedText);
+    fflush(stdout);
 
     free(decodedText);
 }
 
-void freeCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary)
+void destroyCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary)
 {
     if (pCharInfoNodeDictionary == NULL)
     {
@@ -239,18 +240,20 @@ void printCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary)
         return;
     }
 
-    printf("| %s | %s | %s |\n",
+    fprintf(stdout, "| %s | %s | %s |\n",
            "Characters",
            "Frequencies",
            "Huffman Code");
+    fflush(stdout);
     for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++)
     {
         if (pCharInfoNodeDictionary[decimalCharIndex].frequency > 0)
         {
-            printf("| %-10c | %04d        | %-12s |\n",
+            fprintf(stdout, "| %-10c | %04d        | %-12s |\n",
                    pCharInfoNodeDictionary[decimalCharIndex].character,
                    pCharInfoNodeDictionary[decimalCharIndex].frequency,
                    pCharInfoNodeDictionary[decimalCharIndex].huffmanCode);
+            fflush(stdout);
         }
     }
 }

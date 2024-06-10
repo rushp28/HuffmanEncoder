@@ -5,73 +5,94 @@
 #include "hc_tree.h"
 
 #define MAX_TEXT_INPUT_SIZE 5000
+#define MAX_CHARACTERS 128
+
+void clearInputBuffer()
+{
+    int character;
+    while ((character = getchar()) != '\n' && character != EOF);
+}
 
 int main()
 {
     char pText[MAX_TEXT_INPUT_SIZE + 1] = {0};
-
-    printf("Enter the Text (Upto %d Characters) you want to Encode: \n", MAX_TEXT_INPUT_SIZE);
-    fgets(pText, MAX_TEXT_INPUT_SIZE + 1, stdin);
-    if (pText[0] == '\n')
-    {
-        fprintf(stderr, "ERROR: Failed to Proceed!\nCAUSE: There was no Text Entered!\n");
-        return 1;
-    }
-
     CharInfoNode* pCharInfoNodeDictionary = createCharInfoNodeDictionary();
-    if (!pCharInfoNodeDictionary)
-    {
-        return 1;
-    }
-
-    calculateCharFreqs(pText, pCharInfoNodeDictionary);
-    sortCharFreqs(pCharInfoNodeDictionary);
-
     HCTNQueue* pCharacterQueue = createHCTNQueue();
     HCTNQueue* pInternalQueue = createHCTNQueue();
-    if (!pCharacterQueue || !pInternalQueue)
-    {
-        freeCharInfoDictionary(pCharInfoNodeDictionary);
-        freeHCTNQueue(pCharacterQueue);
-        freeHCTNQueue(pInternalQueue);
-
-        return 1;
-    }
-
-    fillUpHCTNQueue(pCharacterQueue, pCharInfoNodeDictionary);
-    if (pCharacterQueue->pFront->pNextNode == NULL)
-    {
-        fprintf(stderr, "ERROR: Failed to Proceed!\nCAUSE: There is only One Character in the Text!\n");
-        freeCharInfoDictionary(pCharInfoNodeDictionary);
-        freeHCTNQueue(pCharacterQueue);
-        freeHCTNQueue(pInternalQueue);
-
-        return 1;
-    }
-
     HCTree* pHCTree = createHCTree();
-    if (!pHCTree)
-    {
-        freeCharInfoDictionary(pCharInfoNodeDictionary);
-        freeHCTNQueue(pCharacterQueue);
-        freeHCTNQueue(pInternalQueue);
+    char huffmanCodeBuffer[MAX_CHARACTERS] = {0};
+    char option = '1';
 
+    if (!pCharInfoNodeDictionary || !pCharacterQueue || !pInternalQueue || !pHCTree)
+    {
+        destroyCharInfoDictionary(pCharInfoNodeDictionary);
+        destroyHCTNQueue(pCharacterQueue);
+        destroyHCTNQueue(pInternalQueue);
         return 1;
     }
 
-    generateHCTree(pHCTree, pCharacterQueue, pInternalQueue);
+    while (option != '4')
+    {
+        fprintf(stdout, "WELCOME TO RUSHP28'S HUFFMAN ENCODER\nPlease enter the required character to proceed with an operation!\n\n| 1 | -> Enter a New Text to Generate Huffman Codes\n| 2 | -> View Huffman Code Dictionary\n| 3 | -> Display Encoded Text\n| 4 | -> Exit\nOption: ");
+        fgets(&option, 2, stdin);
+        clearInputBuffer();
+        fprintf(stdout, "\n");
+        fflush(stdout);
 
-    char huffmanCodeBuffer[MAX_CHARACTERS] = {0};
-    assignHuffmanCodes(pHCTree->pRoot, pCharInfoNodeDictionary, huffmanCodeBuffer, 0);
+        switch (option)
+        {
+            case '1':
 
-    printCharInfoDictionary(pCharInfoNodeDictionary);
+                fprintf(stdout, "Enter the Text (Upto %d Characters) you want to Encode: \n", MAX_TEXT_INPUT_SIZE);
+                fflush(stdout);
+                fgets(pText, MAX_TEXT_INPUT_SIZE + 1, stdin);
+                fprintf(stdout, "\nHuffman Codes Generated!\n\n");
+                fflush(stdout);
+                if (pText[0] == '\n')
+                {
+                    fprintf(stderr, "ERROR: Failed to Proceed!\nCAUSE: There was no Text Entered!\n");
 
-    encodeText(pText, pCharInfoNodeDictionary);
+                    break;
+                }
 
-    freeCharInfoDictionary(pCharInfoNodeDictionary);
-    freeHCTNQueue(pCharacterQueue);
-    freeHCTNQueue(pInternalQueue);
-    freeHCTree(pHCTree);
+                calculateCharFreqs(pText, pCharInfoNodeDictionary);
+                sortCharFreqs(pCharInfoNodeDictionary);
+
+                fillUpHCTNQueue(pCharacterQueue, pCharInfoNodeDictionary);
+                if (pCharacterQueue->pFront->pNextNode == NULL)
+                {
+                    fprintf(stderr, "ERROR: Failed to Proceed!\nCAUSE: There is only One Character in the Text!\n");
+                    destroyCharInfoDictionary(pCharInfoNodeDictionary);
+                    destroyHCTNQueue(pCharacterQueue);
+                    destroyHCTNQueue(pInternalQueue);
+
+                    break;
+                }
+
+                generateHCTree(pHCTree, pCharacterQueue, pInternalQueue);
+
+                assignHuffmanCodes(pHCTree->pRoot, pCharInfoNodeDictionary, huffmanCodeBuffer, 0);
+
+                break;
+
+            case '2':
+                printCharInfoDictionary(pCharInfoNodeDictionary);
+
+                break;
+
+            case '3':
+                encodeText(pText, pCharInfoNodeDictionary);
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    destroyCharInfoDictionary(pCharInfoNodeDictionary);
+    destroyHCTNQueue(pCharacterQueue);
+    destroyHCTNQueue(pInternalQueue);
+    destroyHCTree(pHCTree);
 
     return 0;
 }

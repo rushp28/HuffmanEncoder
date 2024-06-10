@@ -102,7 +102,7 @@ void fillUpHCTNQueue(HCTNQueue* pHCTNQueue, CharInfoNode* pCharInfoNodeDictionar
 }
 
 
-void freeHCTNQueue(HCTNQueue* pHCTNQueue)
+void destroyHCTNQueue(HCTNQueue* pHCTNQueue)
 {
     if (pHCTNQueue == NULL)
     {
@@ -114,7 +114,7 @@ void freeHCTNQueue(HCTNQueue* pHCTNQueue)
     {
         HCTNode* pNext = pHCTNQueue->pFront->pNextNode;
 
-        freeHCTNode(pHCTNQueue->pFront);
+        destroyHCTNode(pHCTNQueue->pFront);
 
         pHCTNQueue->pFront = pNext;
     }

@@ -7,6 +7,8 @@
 #include "char_info_node.h"
 #include "hct_node.h"
 
+#define MAX_CHARACTERS 128
+
 typedef struct HCTNQueue
 {
     HCTNode* pFront;
@@ -23,6 +25,6 @@ HCTNode* dequeueFromHTCNQueue(HCTNQueue* pHCTNQueue);
 
 void fillUpHCTNQueue(HCTNQueue* pHCTNQueue, CharInfoNode* pCharInfoNodeDictionary);
 
-void freeHCTNQueue(HCTNQueue* pHCTNQueue);
+void destroyHCTNQueue(HCTNQueue* pHCTNQueue);
 
 #endif //M2_HCTN_QUEUE_H

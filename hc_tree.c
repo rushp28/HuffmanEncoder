@@ -65,7 +65,7 @@ void generateHCTree(HCTree* pHCTree, HCTNQueue* pCharacterHCTNQueue, HCTNQueue* 
     pHCTree->pRoot = dequeueFromHTCNQueue(pInternalHCTNQueue);
 }
 
-void freeHCTree(HCTree* pHCTree)
+void destroyHCTree(HCTree* pHCTree)
 {
     if (pHCTree == NULL)
     {
@@ -73,17 +73,17 @@ void freeHCTree(HCTree* pHCTree)
         return;
     }
 
-    freeHCTNodesInHCTree(pHCTree->pRoot);
+    destroyHCTNodesInHCTree(pHCTree->pRoot);
 
     free(pHCTree);
 }
 
-void freeHCTNodesInHCTree(HCTNode* pHCTNode)
+void destroyHCTNodesInHCTree(HCTNode* pHCTNode)
 {
     if (pHCTNode == NULL) return;
 
-    freeHCTNodesInHCTree(pHCTNode->pLeftNode);
-    freeHCTNodesInHCTree(pHCTNode->pRightNode);
+    destroyHCTNodesInHCTree(pHCTNode->pLeftNode);
+    destroyHCTNodesInHCTree(pHCTNode->pRightNode);
 
     free(pHCTNode);
 }
