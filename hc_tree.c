@@ -1,10 +1,8 @@
 #include "hc_tree.h"
 
-HCTree* createHCTree()
-{
+HCTree* createHCTree() {
     HCTree* pNewHCTree = (HCTree*)calloc(1, sizeof(HCTree));
-    if (pNewHCTree == NULL)
-    {
+    if (pNewHCTree == NULL) {
         fprintf(stderr, "ERROR: Failed to Create Huffman Coding Tree!\nCAUSE: Memory Allocation for Huffman Coding Tree Failed!\n");
         return NULL;
     }
@@ -14,44 +12,35 @@ HCTree* createHCTree()
     return pNewHCTree;
 }
 
-void generateHCTree(HCTree* pHCTree, HCTNQueue* pCharacterHCTNQueue, HCTNQueue* pInternalHCTNQueue)
-{
-    if (pHCTree == NULL)
-    {
+void generateHCTree(HCTree* pHCTree, HCTNQueue* pCharacterHCTNQueue, HCTNQueue* pInternalHCTNQueue) {
+    if (pHCTree == NULL) {
         fprintf(stderr, "ERROR: Failed to Generate Huffman Coding Tree!\nCAUSE: Pointer to Huffman Coding Tree is NULL!\n");
         return;
     }
-    if (pCharacterHCTNQueue == NULL)
-    {
+    if (pCharacterHCTNQueue == NULL) {
         fprintf(stderr, "ERROR: Failed to Generate Huffman Coding Tree!\nCAUSE: Pointer to Character Huffman Coding Tree Node Queue is NULL!\n");
         return;
     }
-    if (pInternalHCTNQueue == NULL)
-    {
+    if (pInternalHCTNQueue == NULL) {
         fprintf(stderr, "ERROR: Failed to Generate Huffman Coding Tree!\nCAUSE: Pointer to Internal Huffman Coding Tree Node Queue is NULL!\n");
         return;
     }
 
-    while (pCharacterHCTNQueue->pFront != NULL || !(pCharacterHCTNQueue->pFront == NULL && pInternalHCTNQueue->pFront->pNextNode == NULL))
-    {
+    while (pCharacterHCTNQueue->pFront != NULL || !(pCharacterHCTNQueue->pFront == NULL && pInternalHCTNQueue->pFront->pNextNode == NULL)) {
         HCTNode *pLeftNode = NULL;
         HCTNode *pRightNode = NULL;
 
-        if (pCharacterHCTNQueue->pFront != NULL && (pInternalHCTNQueue->pFront == NULL || pCharacterHCTNQueue->pFront->weight <= pInternalHCTNQueue->pFront->weight))
-        {
+        if (pCharacterHCTNQueue->pFront != NULL && (pInternalHCTNQueue->pFront == NULL || pCharacterHCTNQueue->pFront->weight <= pInternalHCTNQueue->pFront->weight)) {
             pLeftNode = dequeueFromHTCNQueue(pCharacterHCTNQueue);
         }
-        else
-        {
+        else {
             pLeftNode = dequeueFromHTCNQueue(pInternalHCTNQueue);
         }
 
-        if (pCharacterHCTNQueue->pFront != NULL && (pInternalHCTNQueue->pFront == NULL || pCharacterHCTNQueue->pFront->weight <= pInternalHCTNQueue->pFront->weight))
-        {
+        if (pCharacterHCTNQueue->pFront != NULL && (pInternalHCTNQueue->pFront == NULL || pCharacterHCTNQueue->pFront->weight <= pInternalHCTNQueue->pFront->weight)) {
             pRightNode = dequeueFromHTCNQueue(pCharacterHCTNQueue);
         }
-        else
-        {
+        else {
             pRightNode = dequeueFromHTCNQueue(pInternalHCTNQueue);
         }
 
@@ -65,10 +54,8 @@ void generateHCTree(HCTree* pHCTree, HCTNQueue* pCharacterHCTNQueue, HCTNQueue* 
     pHCTree->pRoot = dequeueFromHTCNQueue(pInternalHCTNQueue);
 }
 
-void destroyHCTree(HCTree* pHCTree)
-{
-    if (pHCTree == NULL)
-    {
+void destroyHCTree(HCTree* pHCTree) {
+    if (pHCTree == NULL) {
         fprintf(stderr, "ERROR: Failed to Destroy Huffman Coding Tree!\nCAUSE: Pointer to Huffman Coding Tree is NULL!\n");
         return;
     }
@@ -78,8 +65,7 @@ void destroyHCTree(HCTree* pHCTree)
     free(pHCTree);
 }
 
-void destroyHCTNodesInHCTree(HCTNode* pHCTNode)
-{
+void destroyHCTNodesInHCTree(HCTNode* pHCTNode) {
     if (pHCTNode == NULL) return;
 
     destroyHCTNodesInHCTree(pHCTNode->pLeftNode);

@@ -1,10 +1,8 @@
 #include "hctn_queue.h"
 
-HCTNQueue* createHCTNQueue()
-{
+HCTNQueue* createHCTNQueue() {
     HCTNQueue* pNewHCTNQueue = (HCTNQueue*)calloc(1, sizeof(HCTNQueue));
-    if (pNewHCTNQueue == NULL)
-    {
+    if (pNewHCTNQueue == NULL) {
         fprintf(stderr, "ERROR: Failed to Create Huffman Coding Tree Node Queue!\nCAUSE: Memory Allocation for HCTN Queue Failed!\n");
         return NULL;
     }
@@ -15,10 +13,8 @@ HCTNQueue* createHCTNQueue()
     return pNewHCTNQueue;
 }
 
-bool isEmptyHCTNQueue(HCTNQueue* pHCTNQueue)
-{
-    if (pHCTNQueue == NULL)
-    {
+bool isEmptyHCTNQueue(HCTNQueue* pHCTNQueue) {
+    if (pHCTNQueue == NULL) {
         fprintf(stderr, "ERROR: Failed to Check if Huffman Coding Tree Node Queue is Empty!\nCAUSE: Pointer to HCTN Queue is NULL!\n");
         return NULL;
     }
@@ -92,8 +88,7 @@ void fillUpHCTNQueue(HCTNQueue* pHCTNQueue, CharInfoNode* pCharInfoNodeDictionar
         return;
     }
 
-    for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++)
-    {
+    for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++) {
         if (pCharInfoNodeDictionary[decimalCharIndex].frequency > 0)
         {
             enqueueIntoHTCNQueue(pHCTNQueue,createHCTNode(pCharInfoNodeDictionary[decimalCharIndex].character, pCharInfoNodeDictionary[decimalCharIndex].frequency));

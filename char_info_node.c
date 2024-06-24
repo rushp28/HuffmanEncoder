@@ -1,16 +1,13 @@
 #include "char_info_node.h"
 
-CharInfoNode* createCharInfoNodeDictionary()
-{
+CharInfoNode* createCharInfoNodeDictionary() {
     CharInfoNode* pCharInfoNodeDictionary = (CharInfoNode*)calloc(MAX_CHARACTERS, sizeof(CharInfoNode));
-    if (pCharInfoNodeDictionary == NULL)
-    {
+    if (pCharInfoNodeDictionary == NULL) {
         fprintf(stderr, "ERROR: Failed to Create Character Information Dictionary!\nCAUSE: Memory Allocation for pCharInfoNodeDictionary Failed!\n");
         return NULL;
     }
 
-    for (int decimalCharValue = 0; decimalCharValue < MAX_CHARACTERS; decimalCharValue++)
-    {
+    for (int decimalCharValue = 0; decimalCharValue < MAX_CHARACTERS; decimalCharValue++) {
         pCharInfoNodeDictionary[decimalCharValue].character = (char)decimalCharValue;
         pCharInfoNodeDictionary[decimalCharValue].frequency = 0;
         pCharInfoNodeDictionary[decimalCharValue].huffmanCode = NULL;
@@ -19,44 +16,34 @@ CharInfoNode* createCharInfoNodeDictionary()
     return pCharInfoNodeDictionary;
 }
 
-void calculateCharFreqs(const char text[], CharInfoNode* pCharInfoNodeDictionary)
-{
-    if (pCharInfoNodeDictionary == NULL)
-    {
+void calculateCharFreqs(const char text[], CharInfoNode* pCharInfoNodeDictionary) {
+    if (pCharInfoNodeDictionary == NULL) {
         fprintf(stderr, "ERROR: Failed to Calculate Character Frequencies!\nCAUSE: Pointer to pCharInfoNodeDictionary is NULL!\n");
         return;
     }
-    if (text == NULL)
-    {
+    if (text == NULL) {
         fprintf(stderr, "ERROR: Failed to Encode Text!\nCAUSE: text is NULL!\n");
         return;
     }
 
-
-
-    for (int textIndex = 0; text[textIndex] != '\0'; textIndex++)
-    {
+    for (int textIndex = 0; text[textIndex] != '\0'; textIndex++) {
         unsigned char castedTextCharacter = (unsigned char)text[textIndex];
 
-        if (isprint(castedTextCharacter))
-        {
+        if (isprint(castedTextCharacter)) {
             pCharInfoNodeDictionary[castedTextCharacter].frequency++;
         }
     }
 }
 
-int compareCharFreqs(const void* pVoidFirstCharInfoNode, const void* pVoidSecondCharInfoNode)
-{
+int compareCharFreqs(const void* pVoidFirstCharInfoNode, const void* pVoidSecondCharInfoNode) {
     CharInfoNode* pFirstCharInfoNode = (CharInfoNode*)pVoidFirstCharInfoNode;
     CharInfoNode* pSecondCharInfoNode = (CharInfoNode*)pVoidSecondCharInfoNode;
 
     return (pFirstCharInfoNode->frequency - pSecondCharInfoNode->frequency);
 }
 
-void sortCharFreqs(CharInfoNode* pCharInfoNodeDictionary)
-{
-    if (pCharInfoNodeDictionary == NULL)
-    {
+void sortCharFreqs(CharInfoNode* pCharInfoNodeDictionary) {
+    if (pCharInfoNodeDictionary == NULL) {
         fprintf(stderr, "ERROR: Failed to Sort Character Frequencies!\nCAUSE: Pointer to pCharInfoNodeDictionary is NULL!\n");
         return;
     }
@@ -64,34 +51,27 @@ void sortCharFreqs(CharInfoNode* pCharInfoNodeDictionary)
     qsort(pCharInfoNodeDictionary, MAX_CHARACTERS, sizeof(CharInfoNode), compareCharFreqs);
 }
 
-void assignHuffmanCodes(HCTNode* pHCTNode, CharInfoNode* pCharInfoNodeDictionary, char* huffmanCodeBuffer, int huffmanCodeLength)
-{
+void assignHuffmanCodes(HCTNode* pHCTNode, CharInfoNode* pCharInfoNodeDictionary, char* huffmanCodeBuffer, int huffmanCodeLength) {
     if (pHCTNode == NULL) return;
-    if (pCharInfoNodeDictionary == NULL)
-    {
+    if (pCharInfoNodeDictionary == NULL) {
         fprintf(stderr, "ERROR: Failed to Assign Huffman Codes!\nCAUSE: Pointer to pCharInfoNodeDictionary is NULL!\n");
         return;
     }
-    if (huffmanCodeBuffer == NULL)
-    {
+    if (huffmanCodeBuffer == NULL) {
         fprintf(stderr, "ERROR: Failed to Assign Huffman Codes!\nCAUSE: Pointer to huffmanCodeBuffer is NULL!\n");
         return;
     }
-    if (huffmanCodeLength < 0)
-    {
+    if (huffmanCodeLength < 0) {
         fprintf(stderr, "ERROR: Failed to Assign Huffman Codes!\nCAUSE: huffmanCodeLength is Negative!\n");
         return;
     }
 
     // Check if leaf node and assign Huffman code
-    if (pHCTNode->pLeftNode == NULL && pHCTNode->pRightNode == NULL)
-    {
+    if (pHCTNode->pLeftNode == NULL && pHCTNode->pRightNode == NULL) {
         unsigned char charIndex = (unsigned char)pHCTNode->character;
 
-        for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; ++decimalCharIndex)
-        {
-            if (pCharInfoNodeDictionary[decimalCharIndex].character == charIndex)
-            {
+        for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; ++decimalCharIndex) {
+            if (pCharInfoNodeDictionary[decimalCharIndex].character == charIndex) {
                 pCharInfoNodeDictionary[decimalCharIndex].huffmanCode = (char*)calloc(huffmanCodeLength + 1, sizeof(char));
 
                 strncpy(pCharInfoNodeDictionary[decimalCharIndex].huffmanCode, huffmanCodeBuffer, huffmanCodeLength);
@@ -104,29 +84,24 @@ void assignHuffmanCodes(HCTNode* pHCTNode, CharInfoNode* pCharInfoNodeDictionary
     }
 
     // Recurse on left child with '0' appended
-    if (pHCTNode->pLeftNode != NULL)
-    {
+    if (pHCTNode->pLeftNode != NULL) {
         huffmanCodeBuffer[huffmanCodeLength] = '0';
         assignHuffmanCodes(pHCTNode->pLeftNode, pCharInfoNodeDictionary, huffmanCodeBuffer, huffmanCodeLength + 1);
     }
 
     // Recurse on right child with '1' appended
-    if (pHCTNode->pRightNode != NULL)
-    {
+    if (pHCTNode->pRightNode != NULL) {
         huffmanCodeBuffer[huffmanCodeLength] = '1';
         assignHuffmanCodes(pHCTNode->pRightNode, pCharInfoNodeDictionary, huffmanCodeBuffer, huffmanCodeLength + 1);
     }
 }
 
-void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary)
-{
-    if (text == NULL)
-    {
+void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary) {
+    if (text == NULL) {
         fprintf(stderr, "ERROR: Failed to Encode Text!\nCAUSE: text is NULL!\n");
         return;
     }
-    if (pCharInfoNodeDictionary == NULL)
-    {
+    if (pCharInfoNodeDictionary == NULL) {
         fprintf(stderr, "ERROR: Failed to Encode Text!\nCAUSE: Pointer to pCharInfoNodeDictionary is NULL!\n");
         return;
     }
@@ -134,22 +109,18 @@ void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary)
     int textLength = (int)strlen(text);
     char* encodedText = (char*)calloc(textLength * 8 + 1, sizeof(char)); // 8 bits per character
 
-    if (encodedText == NULL)
-    {
+    if (encodedText == NULL) {
         fprintf(stderr, "ERROR: Failed to Encode Text!\nCAUSE: Memory Allocation for Encoded Text Failed!\n");
         return;
     }
 
     int encodedTextIndex = 0;
 
-    for (int textIndex = 0; textIndex < textLength - 1; textIndex++)
-    {
+    for (int textIndex = 0; textIndex < textLength - 1; textIndex++) {
         unsigned char castedTextCharacter = (unsigned char)text[textIndex];
 
-        for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++)
-        {
-            if (pCharInfoNodeDictionary[decimalCharIndex].character == castedTextCharacter)
-            {
+        for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++) {
+            if (pCharInfoNodeDictionary[decimalCharIndex].character == castedTextCharacter) {
                 int huffmanCodeLength = (int)strlen(pCharInfoNodeDictionary[decimalCharIndex].huffmanCode);
                 strncpy(&encodedText[encodedTextIndex], pCharInfoNodeDictionary[decimalCharIndex].huffmanCode, huffmanCodeLength);
                 encodedTextIndex += huffmanCodeLength;
@@ -160,57 +131,10 @@ void encodeText(const char text[], CharInfoNode* pCharInfoNodeDictionary)
 
     encodedText[encodedTextIndex] = '\0';
 
-    fprintf(stdout, "Here's your Encoded Text:\n%s\n", encodedText);
+    fprintf(stdout, "\nHere's your Encoded Text:\n%s\n", encodedText);
     fflush(stdout);
 
     free(encodedText);
-}
-
-void decodeText(const char encodedText[], CharInfoNode* pCharInfoNodeDictionary)
-{
-    if (pCharInfoNodeDictionary == NULL)
-    {
-        fprintf(stderr, "ERROR: Failed to Decode Text!\nCAUSE: Pointer to pCharInfoNodeDictionary is NULL!\n");
-        return;
-    }
-
-    int encodedTextLength = (int)strlen(encodedText);
-    int decodedTextLength = 0;
-
-    char* decodedText = (char*)calloc(encodedTextLength + 1, sizeof(char));
-    if (decodedText == NULL)
-    {
-        fprintf(stderr, "ERROR: Failed to Decode Text!\nCAUSE: Memory Allocation for Decoded Text Failed!\n");
-        return;
-    }
-
-    int encodedTextIndex = 0;
-
-    while (encodedTextIndex < encodedTextLength)
-    {
-        for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++)
-        {
-            if (pCharInfoNodeDictionary[decimalCharIndex].huffmanCode != NULL)
-            {
-                int huffmanCodeLength = (int)strlen(pCharInfoNodeDictionary[decimalCharIndex].huffmanCode);
-
-                if (strncmp(&encodedText[encodedTextIndex], pCharInfoNodeDictionary[decimalCharIndex].huffmanCode, huffmanCodeLength) == 0)
-                {
-                    decodedText[decodedTextLength++] = pCharInfoNodeDictionary[decimalCharIndex].character;
-                    encodedTextIndex += huffmanCodeLength;
-
-                    break;
-                }
-            }
-        }
-    }
-
-    decodedText[decodedTextLength] = '\0';
-
-    fprintf(stdout, "Decoded Text: %s\n", decodedText);
-    fflush(stdout);
-
-    free(decodedText);
 }
 
 void destroyCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary)
@@ -232,10 +156,8 @@ void destroyCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary)
     free(pCharInfoNodeDictionary);
 }
 
-void printCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary)
-{
-    if (pCharInfoNodeDictionary == NULL)
-    {
+void printCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary) {
+    if (pCharInfoNodeDictionary == NULL) {
         fprintf(stderr, "ERROR: Failed to Print Character Information Dictionary!\nCAUSE: Pointer to pCharInfoNodeDictionary is NULL!\n");
         return;
     }
@@ -245,10 +167,8 @@ void printCharInfoDictionary(CharInfoNode* pCharInfoNodeDictionary)
            "Frequencies",
            "Huffman Code");
     fflush(stdout);
-    for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++)
-    {
-        if (pCharInfoNodeDictionary[decimalCharIndex].frequency > 0)
-        {
+    for (int decimalCharIndex = 0; decimalCharIndex < MAX_CHARACTERS; decimalCharIndex++) {
+        if (pCharInfoNodeDictionary[decimalCharIndex].frequency > 0) {
             fprintf(stdout, "| %-10c | %04d        | %-12s |\n",
                    pCharInfoNodeDictionary[decimalCharIndex].character,
                    pCharInfoNodeDictionary[decimalCharIndex].frequency,
